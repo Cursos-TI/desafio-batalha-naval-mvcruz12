@@ -1,23 +1,71 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+#define TAM 10
+#define TAM_HAB 5
+
+// Função para aplicar uma forma geométrica no tabuleiro
+void aplicarForma(int tabuleiro[TAM][TAM], int forma[TAM_HAB][TAM_HAB], int origemLinha, int origemColuna) {
+    int offset = TAM_HAB / 2;
+
+    for (int i = 0; i < TAM_HAB; i++) {
+        for (int j = 0; j < TAM_HAB; j++) {
+            int linha = origemLinha + (i - offset);
+            int coluna = origemColuna + (j - offset);
+
+            if (linha >= 0 && linha < TAM && coluna >= 0 && coluna < TAM) {
+                if (forma[i][j] == 5) {
+                    tabuleiro[linha][coluna] = 5;
+                }
+            }
+        }
+    }
+}
 
 int main() {
+    int tabuleiro[TAM][TAM] = {0};
+
+    // FORMAS GEOMÉTRICAS 
+    int cone[TAM_HAB][TAM_HAB] = {0};
+    int cruz[TAM_HAB][TAM_HAB] = {0};
+    int octaedro[TAM_HAB][TAM_HAB] = {0};
+
+    // Cone (3 linhas, triângulo invertido)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < TAM_HAB; j++) {
+            if (abs(j - 2) <= i) {
+                cone[i][j] = 5;
+            }
+        }
+    }
+
+    // Cruz (3 linhas: 0, 1, 2)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < TAM_HAB; j++) {
+            if (i == 1 || j == 2) {
+                cruz[i][j] = 5;
+            }
+        }
+    }
+
+    // Octaedro (3 linhas: 0, 1, 2)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < TAM_HAB; j++) {
+            if (abs(i - 1) + abs(j - 2) <= 1) {
+                octaedro[i][j] = 5;
+            }
+        }
+    }
+
+    // Posicionando as formas no tabuleiro 
+    aplicarForma(tabuleiro, cone, 2, 2);        // Cone no topo
+    aplicarForma(tabuleiro, cruz, 5, 5);        // Cruz no centro
+    aplicarForma(tabuleiro, octaedro, 8, 8);    // Octaedro abaixo
+
     // Tamanho do tabuleiro e dos navios
     int tamanhoTabuleiro = 10;
     int tamanhoNavio = 3;
-
-    // Matriz do tabuleiro inicializada com 0 (água)
-    int tabuleiro[10][10] = {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+   
 
     // Navios (valor 3 representa parte do navio)
     int navioHorizontal[3] = {3, 3, 3};
@@ -26,17 +74,17 @@ int main() {
     int navioDiagonal2[3] = {3, 3, 3};
 
     // Coordenadas iniciais
-    int linhaNavioHorizontal = 2; // linha 2
-    int colunaNavioHorizontal = 4; // coluna E
+    int linhaNavioHorizontal = 1; // linha 2
+    int colunaNavioHorizontal = 7; // coluna H
 
-    int linhaNavioVertical = 5; // linha 5
-    int colunaNavioVertical = 7; // coluna H
+    int linhaNavioVertical = 3; // linha 5
+    int colunaNavioVertical = 9; // coluna J
 
     int linhaNavioDiagonal1 = 6; // linha 6
-    int colunaNavioDiagonal1 = 1; // coluna A
+    int colunaNavioDiagonal1 = 0; // coluna A
 
-    int linhaNavioDiagonal2 = 2; // linha 2
-    int colunaNavioDiagonal2 = 0; // coluna A
+    int linhaNavioDiagonal2 = 8; // linha 2
+    int colunaNavioDiagonal2 = 4; // coluna E
 
     // Variável de controle para laços e verificação de sobreposição
 
@@ -140,25 +188,18 @@ int main() {
         }
     }
 
-    
-
-    // Imprime o cabeçalho das colunas (letras de A a J)
+    // === Imprime o tabuleiro ===
+    printf("\nTabuleiro com formas geométricas (cone, cruz, octaedro):\n\n");
 
     printf("    ");
-
-    for (int coluna = 0; coluna < tamanhoTabuleiro; coluna++) 
-    {
+    for (int coluna = 0; coluna < TAM; coluna++) {
         printf(" %c", 'A' + coluna);
     }
     printf("\n");
 
-    // Linhas numeradas (0 a 9)
-    
-    for (int linha = 0; linha < tamanhoTabuleiro; linha++) 
-    {
-        printf(" %d  ", linha);
-        for (int coluna = 0; coluna < tamanhoTabuleiro; coluna++) 
-        {
+    for (int linha = 0; linha < TAM; linha++) {
+        printf(" %2d ", linha);
+        for (int coluna = 0; coluna < TAM; coluna++) {
             printf(" %d", tabuleiro[linha][coluna]);
         }
         printf("\n");

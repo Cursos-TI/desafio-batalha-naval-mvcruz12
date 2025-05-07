@@ -22,6 +22,8 @@ int main() {
     // Navios (valor 3 representa parte do navio)
     int navioHorizontal[3] = {3, 3, 3};
     int navioVertical[3] = {3, 3, 3};
+    int navioDiagonal1[3] = {3, 3, 3};
+    int navioDiagonal2[3] = {3, 3, 3};
 
     // Coordenadas iniciais
     int linhaNavioHorizontal = 2; // linha 2
@@ -29,6 +31,12 @@ int main() {
 
     int linhaNavioVertical = 5; // linha 5
     int colunaNavioVertical = 7; // coluna H
+
+    int linhaNavioDiagonal1 = 6; // linha 6
+    int colunaNavioDiagonal1 = 1; // coluna A
+
+    int linhaNavioDiagonal2 = 2; // linha 2
+    int colunaNavioDiagonal2 = 0; // coluna A
 
     // Variável de controle para laços e verificação de sobreposição
 
@@ -77,6 +85,62 @@ int main() {
             }
         }
     }
+
+    // Posiciona o navio diagonal 1
+
+    if (linhaNavioDiagonal1 + tamanhoNavio <= tamanhoTabuleiro &&
+        colunaNavioDiagonal1 + tamanhoNavio <= tamanhoTabuleiro) 
+    {
+        sobreposicao = 0;
+    
+        // Verifica sobreposição apenas nas posições da diagonal
+        for (int i = 0; i < tamanhoNavio; i++) 
+        {
+            if (tabuleiro[linhaNavioDiagonal1 + i][colunaNavioDiagonal1 + i] != 0) 
+            {
+                sobreposicao = 1;
+                break;
+            }
+        }
+    
+        // Se não há sobreposição, posiciona o navio na diagonal
+        if (sobreposicao == 0) 
+        {
+            for (int i = 0; i < tamanhoNavio; i++) 
+            {
+                tabuleiro[linhaNavioDiagonal1 + i][colunaNavioDiagonal1 + i] = navioDiagonal1[i];
+            }
+        }
+    }
+
+    // Posiciona o navio diagonal 2
+
+    if (linhaNavioDiagonal2 - (tamanhoNavio - 1) >= 0 &&
+    colunaNavioDiagonal2 + tamanhoNavio <= tamanhoTabuleiro) 
+    {
+        sobreposicao = 0;
+    
+        // Verifica sobreposição apenas nas posições da diagonal
+        for (int i = 0; i < tamanhoNavio; i++) 
+        {
+            if (tabuleiro[linhaNavioDiagonal2 - i][colunaNavioDiagonal2 + i] != 0) 
+            {
+                sobreposicao = 1;
+                break;
+            }
+        }
+    
+        // Se não há sobreposição, posiciona o navio na diagonal
+        if (sobreposicao == 0) 
+        {
+            for (int i = 0; i < tamanhoNavio; i++) 
+            {
+                tabuleiro[linhaNavioDiagonal2 - i][colunaNavioDiagonal2 + i] = navioDiagonal2[i];
+            }
+        }
+    }
+
+    
 
     // Imprime o cabeçalho das colunas (letras de A a J)
 
